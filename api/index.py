@@ -15,7 +15,7 @@ foods = [
 # Endpoint /food para obtener la lista de alimentos
 @app.route('/food', methods=['GET'])
 def get_food():
-    alimentos = ordenaralimentos(foods)
+
 
     return jsonify(foods)
 
