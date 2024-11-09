@@ -12,7 +12,7 @@ foods = [
 ]
 
 
-# Endpoint /food para obtener la lista de alimentos
+# Endpoint /food para obtener la lista de aliment
 @app.route('/food', methods=['GET'])
 def get_food():
 
