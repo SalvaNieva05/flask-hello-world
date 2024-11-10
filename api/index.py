@@ -1,44 +1,89 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request  # Importamos Flask y funciones necesarias para la API
 
-app = Flask(__name__)
+app = Flask(__name__)  # Inicializamos la aplicación Flask
 
-# Lista de alimentos
-foods = [
-    {"id": 1, "name": "Pizza"},
-    {"id": 2, "name": "Empanada"},
-    {"id": 3, "name": "Lomo"},
-    {"id": 4, "name": "Hamburguesa"},
-    {"id": 5, "name": "Pasta"}
-]
+# Definimos listas para almacenar perfiles y insumos
+perfiles = []  # Lista de objetos de tipo Usuario
+insumos = []   # Lista de objetos de tipo Insumo
 
+# Clase Usuario
+class Usuario:
+    def __init__(self, nombre, perfil_alimenticio, deficiencia=None):
+        self.nombre = nombre
+        self.perfil_alimenticio = perfil_alimenticio
+        self.deficiencia = deficiencia
 
-# Endpoint /food para obtener la lista de aliment
-@app.route('/food', methods=['GET'])
-def get_food():
+    def __str__(self):
+        perfiles = {
+            1: "Flexible",
+            2: "Vegetariano",
+            3: "Vegano",
+            4: "Inflexible por salud"
+        }
+        perfil = perfiles.get(self.perfil_alimenticio, "Desconocido")
+        if self.perfil_alimenticio == 4 and self.deficiencia:
+            return f"{self.nombre}, {perfil} ({self.deficiencia})"
+        else:
+            return f"{self.nombre}, {perfil}"
 
+    def to_dict(self):
+        # Método para convertir el objeto en un diccionario
+        return {
+            "nombre": self.nombre,
+            "perfil_alimenticio": self.perfil_alimenticio,
+            "deficiencia": self.deficiencia
+        }
 
-    return jsonify(foods)
+# Clase Insumo
+class Insumo:
+    def __init__(self, nom, cant):
+        self.nom = nom
+        self.cant = cant
 
+    def __str__(self):
+        cad = "Insumo: {:<10}| Cantidad: {:<10}"
+        return cad.format(self.nom, self.cant)
 
-# Endpoint /food para agregar un nuevo alimento
-@app.route('/food', methods=['POST'])
-def add_food():
-    # Obtener los datos del cuerpo de la solicitud
-    new_food = request.get_json()
+    def to_dict(self):
+        # Método para convertir el objeto en un diccionario
+        return {
+            "nombre": self.nom,
+            "cantidad": self.cant
+        }
 
-    # Asegurarse de que el alimento tenga un nombre
-    if not new_food.get('name'):
-        return jsonify({"error": "El nombre del alimento es obligatorio"}), 400
+# Endpoint para obtener la lista de perfiles
+@app.route('/perfiles', methods=['GET'])
+def obtener_perfiles():
+    return jsonify([p.to_dict() for p in perfiles])  # Convertimos cada objeto en diccionario para enviar como JSON
 
-    # Crear un nuevo id para el alimento
-    new_id = max(food['id'] for food in foods) + 1 if foods else 1
-    new_food['id'] = new_id
+# Endpoint para agregar un nuevo perfil
+@app.route('/perfiles', methods=['POST'])
+def agregar_perfil():
+    data = request.get_json()  # Obtenemos los datos enviados en el cuerpo de la solicitud
+    nuevo_perfil = Usuario(
+        nombre=data['nombre'],
+        perfil_alimenticio=data['perfil_alimenticio'],
+        deficiencia=data.get('deficiencia')
+    )
+    perfiles.append(nuevo_perfil)  # Agregamos el nuevo perfil a la lista
+    return jsonify({"mensaje": "Perfil añadido"}), 201  # Devolvemos un mensaje de confirmación y código 201
 
-    # Agregar el alimento a la lista
-    foods.append(new_food)
+# Endpoint para obtener la lista de insumos
+@app.route('/insumos', methods=['GET'])
+def obtener_insumos():
+    return jsonify([i.to_dict() for i in insumos])  # Convertimos cada objeto en diccionario para enviar como JSON
 
-    return jsonify(new_food), 201
+# Endpoint para agregar un nuevo insumo
+@app.route('/insumos', methods=['POST'])
+def agregar_insumo():
+    data = request.get_json()  # Obtenemos los datos enviados en el cuerpo de la solicitud
+    nuevo_insumo = Insumo(
+        nom=data['nombre'],
+        cant=data['cantidad']
+    )
+    insumos.append(nuevo_insumo)  # Agregamos el nuevo insumo a la lista
+    return jsonify({"mensaje": "Insumo añadido"}), 201  # Devolvemos un mensaje de confirmación y código 201
 
-
+# Función para iniciar la aplicación Flask
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True)  # Ejecutamos la aplicación en modo debug para desarrollo
