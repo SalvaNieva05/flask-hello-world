@@ -43,28 +43,26 @@ insumos = [
     }
 ]   # Lista de insumos
 
-recetas = [
+recetas_favoritas = [
     {
-        "titulo": "Ensalada Mediterránea",
-        "descripcion": "Una ensalada fresca con tomates, pepinos, aceitunas, queso feta y un toque de aceite de oliva."
+        "titulo": "Milanesa de Pollo con Puré de Papa",
+        "descripcion": "Ingredientes: Pollo, Papa, Pan rallado, Huevo "
+                       "Instrucciones: "
+                       "Preparar la milanesa de pollo empanizando las pechugas de pollo en pan rallado."
+                       "Freír las milanesas hasta que estén doradas y crujientes."
+                       "Preparar el puré de papa hirviendo las papas y luego aplastándolas con manteca y leche."
+                       "Servir las milanesas con el puré de papa."
     },
     {
-        "titulo": "Sopa de Zanahorias",
-        "descripcion": "Sopa suave y cremosa de zanahorias, cebolla y jengibre, ideal para los días fríos."
-    },
-    {
-        "titulo": "Pechuga de Pollo al Horno",
-        "descripcion": "Pechuga de pollo marinada con hierbas, limón y aceite de oliva, cocida al horno para un plato saludable."
-    },
-    {
-        "titulo": "Arroz Integral con Verduras",
-        "descripcion": "Un plato saludable con arroz integral, zanahorias, guisantes y pimientos."
-    },
-    {
-        "titulo": "Tortilla de Acelga",
-        "descripcion": "Tortilla vegetariana con acelga, cebolla y huevo."
+        "titulo": "Pollo al Horno con Ensalada de Tomate",
+        "descripcion": "Ingredientes: Pollo, Tomates, Ajo, Aceite de oliva"
+                       "Instrucciones: "
+                       "Marinar el pollo con ajo picado, aceite de oliva y hierbas. "
+                       "Hornear el pollo hasta que esté cocido y dorado. "
+                       "Preparar una ensalada de tomate cortando los tomates en rodajas y aliñándolos con aceite de oliva, sal y pimienta. "
+                       "Servir el pollo con la ensalada de tomate.",
     }
-]   # Lista de recetas
+]   # Lista de recetas favoritas
 
 # Endpoint para obtener la lista de perfiles
 @app.route('/perfiles', methods=['GET'])
@@ -99,10 +97,10 @@ def agregar_insumo():
     insumos.append(nuevo_insumo)  # Agregamos el nuevo insumo a la lista
     return jsonify({"mensaje": "Insumo añadido"}), 201  # Devolvemos un mensaje de confirmación
 
-# Endpoint para obtener la lista de recetas
+# Endpoint para obtener la lista de recetas favoritas
 @app.route('/recetas', methods=['GET'])
 def obtener_recetas():
-    return jsonify(recetas)  # Devolvemos la lista de recetas
+    return jsonify(recetas_favoritas)  # Devolvemos la lista de recetas favoritas
 
 # Endpoint para agregar una nueva receta
 @app.route('/recetas', methods=['POST'])
@@ -114,10 +112,10 @@ def agregar_receta():
     }
 
     # Verificar que no haya más de 5 recetas
-    if len(recetas) >= 5:
+    if len(recetas_favoritas) >= 5:
         return jsonify({"error": "No se pueden agregar más de 5 recetas"}), 400
 
-    recetas.append(receta)  # Agregamos la receta a la lista
+    recetas_favoritas.append(receta)  # Agregamos la receta a la lista
     return jsonify({"mensaje": "Receta añadida"}), 201  # Devolvemos un mensaje de confirmación
 
 # Función para iniciar la aplicación Flask
