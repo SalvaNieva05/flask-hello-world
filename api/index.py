@@ -5,6 +5,7 @@ app = Flask(__name__)  # Inicializamos la aplicación Flask
 # Definimos listas para almacenar perfiles y insumos
 perfiles = []  # Lista de objetos de tipo Usuario
 insumos = []   # Lista de objetos de tipo Insumo
+recetas = []  # Lista de recetas
 
 # Clase Usuario
 class Usuario:
@@ -50,6 +51,18 @@ class Insumo:
             "nombre": self.nom,
             "cantidad": self.cant
         }
+# Clase Receta
+class Receta:
+    def __init__(self, titulo, descripcion):
+        self.titulo = titulo
+        self.descripcion = descripcion
+
+    def to_dict(self):
+        # Método para convertir el objeto en un diccionario
+        return {
+            "titulo": self.titulo,
+            "descripcion": self.descripcion
+        }
 
 # Endpoint para obtener la lista de perfiles
 @app.route('/perfiles', methods=['GET'])
@@ -84,6 +97,28 @@ def agregar_insumo():
     insumos.append(nuevo_insumo)  # Agregamos el nuevo insumo a la lista
     return jsonify({"mensaje": "Insumo añadido"}), 201  # Devolvemos un mensaje de confirmación y código 201
 
+# Endpoint para obtener la lista de recetas
+@app.route('/recetas', methods=['GET'])
+def obtener_recetas():
+    return jsonify([r.to_dict() for r in recetas])  # Convertimos cada receta en diccionario para enviar como JSON
+
+@app.route('/recetas', methods=['POST'])
+def agregar_receta():
+    data = request.get_json()  # Obtenemos los datos enviados en el cuerpo de la solicitud
+    receta = Receta(
+        titulo=data['titulo'],
+        descripcion=data['descripcion']
+    )
+
+    # Verificar que no haya más de 5 recetas
+    if len(recetas) >= 5:
+        return jsonify({"error": "No se pueden agregar más de 5 recetas"}), 400
+
+    recetas.append(receta)  # Agregamos la receta a la lista
+    return jsonify({"mensaje": "Receta añadida"}), 201  # Devolvemos un mensaje de confirmación y código 201
+
 # Función para iniciar la aplicación Flask
 if __name__ == '__main__':
     app.run(debug=True)  # Ejecutamos la aplicación en modo debug para desarrollo
+    
+    
