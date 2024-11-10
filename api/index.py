@@ -46,23 +46,35 @@ insumos = [
 recetas_favoritas = [
     {
         "titulo": "Milanesa de Pollo con Puré de Papa",
-        "descripcion": "Ingredientes: Pollo, Papa, Pan rallado, Huevo "
-                       "Instrucciones: "
-                       "Preparar la milanesa de pollo empanizando las pechugas de pollo en pan rallado."
-                       "Freír las milanesas hasta que estén doradas y crujientes."
-                       "Preparar el puré de papa hirviendo las papas y luego aplastándolas con manteca y leche."
-                       "Servir las milanesas con el puré de papa."
+        "descripcion": (
+            "Ingredientes:\n"
+            "- Pollo\n"
+            "- Papa\n"
+            "- Pan rallado\n"
+            "- Huevo\n\n"
+            "Instrucciones:\n"
+            "1. Preparar la milanesa de pollo empanizando las pechugas de pollo en pan rallado.\n"
+            "2. Freír las milanesas hasta que estén doradas y crujientes.\n"
+            "3. Preparar el puré de papa hirviendo las papas y luego aplastándolas con manteca y leche.\n"
+            "4. Servir las milanesas con el puré de papa."
+        )
     },
     {
         "titulo": "Pollo al Horno con Ensalada de Tomate",
-        "descripcion": "Ingredientes: Pollo, Tomates, Ajo, Aceite de oliva"
-                       "Instrucciones: "
-                       "Marinar el pollo con ajo picado, aceite de oliva y hierbas. "
-                       "Hornear el pollo hasta que esté cocido y dorado. "
-                       "Preparar una ensalada de tomate cortando los tomates en rodajas y aliñándolos con aceite de oliva, sal y pimienta. "
-                       "Servir el pollo con la ensalada de tomate.",
+        "descripcion": (
+            "Ingredientes:\n"
+            "- Pollo\n"
+            "- Tomates\n"
+            "- Ajo\n"
+            "- Aceite de oliva\n\n"
+            "Instrucciones:\n"
+            "1. Marinar el pollo con ajo picado, aceite de oliva y hierbas.\n"
+            "2. Hornear el pollo hasta que esté cocido y dorado.\n"
+            "3. Preparar una ensalada de tomate cortando los tomates en rodajas y aliñándolos con aceite de oliva, sal y pimienta.\n"
+            "4. Servir el pollo con la ensalada de tomate."
+        )
     }
-]   # Lista de recetas favoritas
+]
 
 # Endpoint para obtener la lista de perfiles
 @app.route('/perfiles', methods=['GET'])
